@@ -400,6 +400,157 @@ body { font-family: 'Sarabun', sans-serif; background: var(--bg); color: var(--t
   .felt-inner{width:286px;height:136px;border-radius:72px;}
   .seats-container{width:400px;height:280px;}
 }
+
+/* ===== CHAT WIDGET ===== */
+#chat-widget {
+  position: fixed; bottom: 20px; right: 20px; z-index: 500;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+}
+#chat-toggle-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  border: none; cursor: pointer; font-size: 22px;
+  box-shadow: 0 4px 20px rgba(240,192,64,0.4);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s; position: relative;
+}
+#chat-toggle-btn:hover { transform: scale(1.1); }
+#chat-unread-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--lose); color: #fff; border-radius: 50%;
+  width: 18px; height: 18px; font-size: 10px; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+}
+#chat-panel {
+  width: 300px; height: 400px;
+  background: var(--bg2); border: 1px solid rgba(240,192,64,0.25);
+  border-radius: 16px; display: none; flex-direction: column;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6); overflow: hidden;
+}
+#chat-panel.open { display: flex; }
+.chat-header {
+  padding: 12px 16px; background: rgba(0,0,0,0.4);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.chat-header-title { font-size: 13px; font-weight: 600; color: var(--gold); display: flex; align-items: center; gap: 6px; }
+.chat-online-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--win); display: inline-block; animation: blink 1.5s infinite; }
+.chat-close-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 2px 6px; }
+.chat-close-btn:hover { color: var(--text); }
+#chat-messages {
+  flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px;
+}
+#chat-messages::-webkit-scrollbar { width: 4px; }
+#chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+.chat-msg { display: flex; flex-direction: column; gap: 2px; max-width: 85%; }
+.chat-msg.me { align-self: flex-end; align-items: flex-end; }
+.chat-msg.other { align-self: flex-start; align-items: flex-start; }
+.chat-msg.system { align-self: center; align-items: center; max-width: 100%; }
+.chat-bubble {
+  padding: 7px 12px; border-radius: 14px; font-size: 12px; line-height: 1.4; word-break: break-word;
+}
+.chat-msg.me .chat-bubble { background: linear-gradient(135deg, #2a6a3a, #1a5a2a); color: #d4f5d4; border-bottom-right-radius: 4px; }
+.chat-msg.other .chat-bubble { background: var(--bg3); color: var(--text); border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.06); }
+.chat-msg.system .chat-bubble { background: rgba(240,192,64,0.08); color: var(--gold); font-size: 11px; border-radius: 8px; padding: 4px 10px; }
+.chat-sender { font-size: 10px; color: var(--muted); margin-bottom: 1px; }
+.chat-time { font-size: 10px; color: rgba(255,255,255,0.25); }
+.chat-input-row {
+  display: flex; gap: 6px; padding: 10px 12px;
+  border-top: 1px solid rgba(255,255,255,0.07); background: rgba(0,0,0,0.2);
+}
+#chat-input {
+  flex: 1; background: var(--bg3); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 7px 14px; color: var(--text); font-size: 12px;
+  outline: none; font-family: inherit;
+}
+#chat-input:focus { border-color: rgba(240,192,64,0.4); }
+#chat-send-btn {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--gold);
+  border: none; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background 0.15s;
+}
+#chat-send-btn:hover { background: #ffe060; }
+
+/* ===== ADMIN TABS ===== */
+.admin-tabs {
+  display: flex; gap: 0; background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(240,192,64,0.15); flex-wrap: wrap;
+}
+.admin-tab {
+  padding: 11px 20px; font-size: 13px; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; transition: all 0.15s; font-family: inherit;
+  background: none; border-top: none; border-left: none; border-right: none;
+  white-space: nowrap;
+}
+.admin-tab:hover { color: var(--text); }
+.admin-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.admin-tab-content { display: none; flex: 1; padding: 24px; overflow-y: auto; }
+.admin-tab-content.active { display: block; }
+
+/* User table */
+.user-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.user-table th {
+  text-align: left; padding: 10px 12px; color: var(--muted); font-size: 11px;
+  border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.user-table td { padding: 12px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+.user-table tr:last-child td { border-bottom: none; }
+.user-table tr:hover td { background: rgba(255,255,255,0.02); }
+.status-pill {
+  padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 500; display: inline-block;
+}
+.status-online { background: rgba(63,185,80,0.15); color: var(--win); border: 1px solid rgba(63,185,80,0.3); }
+.status-offline { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.08); }
+.btn-delete-user {
+  background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3);
+  border-radius: 6px; color: var(--lose); font-size: 11px; padding: 4px 10px;
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.btn-delete-user:hover { background: rgba(248,81,73,0.25); border-color: var(--lose); }
+.btn-reset-chips {
+  background: rgba(64,144,255,0.1); border: 1px solid rgba(64,144,255,0.3);
+  border-radius: 6px; color: var(--blue); font-size: 11px; padding: 4px 10px;
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.btn-reset-chips:hover { background: rgba(64,144,255,0.2); }
+.search-box {
+  background: var(--bg3); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 13px;
+  outline: none; font-family: inherit; width: 240px; margin-bottom: 16px;
+}
+.search-box:focus { border-color: rgba(240,192,64,0.4); }
+.admin-section-title { font-size: 15px; font-weight: 600; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.admin-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.stat-card {
+  background: var(--bg3); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.05);
+}
+.stat-card-val { font-size: 28px; font-weight: 700; color: var(--gold); line-height: 1; }
+.stat-card-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.game-ctrl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.game-ctrl-card {
+  background: var(--bg3); border-radius: 10px; padding: 16px;
+  border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 8px;
+}
+.game-ctrl-label { font-size: 12px; color: var(--muted); }
+.game-ctrl-val { font-size: 14px; font-weight: 600; color: var(--text); }
+.btn-danger { background: rgba(248,81,73,0.15); border: 1px solid rgba(248,81,73,0.4); border-radius: 8px; color: var(--lose); font-size: 13px; padding: 9px 18px; cursor: pointer; font-family: inherit; }
+.btn-danger:hover { background: rgba(248,81,73,0.25); }
+.btn-primary { background: rgba(240,192,64,0.15); border: 1px solid rgba(240,192,64,0.4); border-radius: 8px; color: var(--gold); font-size: 13px; padding: 9px 18px; cursor: pointer; font-family: inherit; }
+.btn-primary:hover { background: rgba(240,192,64,0.25); }
+.confirm-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.confirm-box {
+  background: var(--bg2); border: 1px solid rgba(248,81,73,0.3);
+  border-radius: 14px; padding: 2rem; min-width: 300px; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+}
+.confirm-title { font-size: 16px; font-weight: 700; color: var(--lose); margin-bottom: 8px; }
+.confirm-desc { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+.confirm-btns { display: flex; gap: 10px; justify-content: center; }
+.btn-confirm-yes { background: var(--lose); border: none; border-radius: 8px; color: #fff; font-size: 13px; padding: 9px 24px; cursor: pointer; font-family: inherit; }
+.btn-confirm-no { background: var(--bg3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--text); font-size: 13px; padding: 9px 24px; cursor: pointer; font-family: inherit; }
 </style>
 </head>
 <body>
@@ -496,7 +647,85 @@ body { font-family: 'Sarabun', sans-serif; background: var(--bg); color: var(--t
     <div class="admin-title">⚙️ Admin Panel – POKDENG</div>
     <button class="btn-back" onclick="showScreen('login-screen')">ออก</button>
   </div>
-  <div class="admin-body" id="admin-body">
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchAdminTab('overview')">📊 ภาพรวม</button>
+    <button class="admin-tab" onclick="switchAdminTab('users')">👥 ผู้เล่น</button>
+    <button class="admin-tab" onclick="switchAdminTab('game')">🎮 จัดการเกม</button>
+    <button class="admin-tab" onclick="switchAdminTab('log')">📜 ประวัติ</button>
+    <button class="admin-tab" onclick="switchAdminTab('chat')">💬 แชทห้อง</button>
+  </div>
+
+  <!-- Tab: Overview -->
+  <div id="admin-tab-overview" class="admin-tab-content active">
+    <div id="admin-overview-body"></div>
+  </div>
+
+  <!-- Tab: Users -->
+  <div id="admin-tab-users" class="admin-tab-content">
+    <div class="admin-section-title">👥 รายชื่อผู้ใช้ทั้งหมด</div>
+    <input class="search-box" id="user-search" type="text" placeholder="🔍 ค้นหาผู้ใช้..." oninput="renderUserTable()"/>
+    <div style="overflow-x:auto;">
+      <table class="user-table" id="user-table-el">
+        <thead>
+          <tr>
+            <th>ผู้ใช้</th>
+            <th>สถานะ</th>
+            <th>เงิน</th>
+            <th>เพิ่ม/หักเงิน</th>
+            <th>การจัดการ</th>
+          </tr>
+        </thead>
+        <tbody id="user-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab: Game Control -->
+  <div id="admin-tab-game" class="admin-tab-content">
+    <div id="admin-game-body"></div>
+  </div>
+
+  <!-- Tab: Log -->
+  <div id="admin-tab-log" class="admin-tab-content">
+    <div class="admin-section-title">📜 ประวัติผลการเล่น</div>
+    <div class="history-log" id="admin-log-body" style="max-height:500px"></div>
+  </div>
+
+  <!-- Tab: Chat log -->
+  <div id="admin-tab-chat" class="admin-tab-content">
+    <div class="admin-section-title">💬 ข้อความในห้อง</div>
+    <div id="admin-chat-log" style="font-size:13px;display:flex;flex-direction:column;gap:8px;max-height:500px;overflow-y:auto;"></div>
+  </div>
+</div>
+
+<!-- CHAT WIDGET (แสดงเมื่อ login แล้ว) -->
+<div id="chat-widget" style="display:none;">
+  <div id="chat-panel">
+    <div class="chat-header">
+      <div class="chat-header-title"><span class="chat-online-dot"></span> แชทห้อง</div>
+      <button class="chat-close-btn" onclick="toggleChat()">✕</button>
+    </div>
+    <div id="chat-messages"></div>
+    <div class="chat-input-row">
+      <input id="chat-input" type="text" placeholder="พิมพ์ข้อความ..." maxlength="200" onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button id="chat-send-btn" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+  <button id="chat-toggle-btn" onclick="toggleChat()">
+    💬
+    <div id="chat-unread-badge"></div>
+  </button>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirm-modal" class="confirm-modal" style="display:none;">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirm-title">ยืนยันการลบ</div>
+    <div class="confirm-desc" id="confirm-desc">คุณแน่ใจหรือไม่?</div>
+    <div class="confirm-btns">
+      <button class="btn-confirm-yes" id="confirm-yes-btn">ยืนยัน</button>
+      <button class="btn-confirm-no" onclick="closeConfirm()">ยกเลิก</button>
+    </div>
   </div>
 </div>
 
@@ -623,6 +852,7 @@ function doLogin() {
 function doLogout() {
   if(G.phase !== 'idle') leaveGame();
   G.myName = null;
+  hideChatWidget();
   showScreen('login-screen');
 }
 
@@ -635,6 +865,7 @@ function showLobby() {
   document.getElementById('lobby-chips-display').textContent = `฿${p.chips.toLocaleString()}`;
   updateRoomPreview();
   showScreen('lobby-screen');
+  showChatWidget();
 }
 
 function updateRoomPreview() {
@@ -1104,84 +1335,270 @@ function showPokFlash() {
 }
 
 // ============================================================
-// ADMIN
+// ADMIN TABS
 // ============================================================
-function goAdmin() {
-  const u=document.getElementById('login-username').value.trim();
-  const p=document.getElementById('login-password').value;
-  if(u!=='admin'||p!=='12345678'){
-    document.getElementById('login-err').textContent='ข้อมูลแอดมินไม่ถูกต้อง';
-    return;
-  }
-  renderAdminPanel();
-  showScreen('admin-screen');
+let currentAdminTab = 'overview';
+
+function switchAdminTab(tab) {
+  currentAdminTab = tab;
+  document.querySelectorAll('.admin-tab').forEach((t,i)=>{
+    const tabs = ['overview','users','game','log','chat'];
+    t.classList.toggle('active', tabs[i]===tab);
+  });
+  document.querySelectorAll('.admin-tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById(`admin-tab-${tab}`).classList.add('active');
+  if(tab==='overview') renderAdminOverview();
+  else if(tab==='users') renderUserTable();
+  else if(tab==='game') renderAdminGame();
+  else if(tab==='log') renderAdminLog();
+  else if(tab==='chat') renderAdminChatLog();
 }
 
 function renderAdminPanel() {
-  const body = document.getElementById('admin-body');
+  renderAdminOverview();
+}
+
+function renderAdminOverview() {
   const players = Object.entries(DB.players).filter(([n])=>n!=='admin');
   const inGame = players.filter(([n,p])=>p.inGame).length;
   const totalChips = players.reduce((s,[n,p])=>s+p.chips,0);
-
-  let playerRows = players.map(([name,p])=>{
-    const col=COLORS[Object.keys(DB.players).indexOf(name)%COLORS.length];
-    const bg=INITIALS_BG[Object.keys(DB.players).indexOf(name)%INITIALS_BG.length];
-    return `<div class="admin-player-row">
-      <div class="admin-player-info">
-        <div class="admin-avatar" style="background:${bg};color:${col}">${name.substring(0,2).toUpperCase()}</div>
-        <div>
-          <div class="admin-pname">${name} ${p.inGame?'<span style="color:var(--win);font-size:10px">● ออนไลน์</span>':'<span style="color:var(--muted);font-size:10px">ออฟไลน์</span>'}</div>
-          <div class="admin-pchips">฿${p.chips.toLocaleString()}</div>
-        </div>
-      </div>
-      <div class="admin-actions">
-        <input class="admin-input" type="number" id="chips-input-${name}" placeholder="จำนวน" min="1"/>
-        <button class="btn-add-chips" onclick="adminAddChips('${name}')">+เพิ่ม</button>
-        <button class="btn-remove-chips" onclick="adminRemoveChips('${name}')">-หัก</button>
-        <button class="btn-kick" onclick="adminKick('${name}')">Kick</button>
-      </div>
-    </div>`;
-  }).join('');
-
-  const logHtml = DB.gameLog.slice(0,20).map(log=>{
-    const items = log.items.map(i=>`<span class="${i.type==='win'?'log-win':'log-lose'}">${i.name}: ${i.type==='win'?'+':'–'}฿${i.amt}</span>`).join(', ');
-    return `<div class="log-item">ตาที่ ${log.round} (${log.ts}) – ${items}</div>`;
-  }).join('') || '<div style="color:var(--muted);font-size:12px">ยังไม่มีประวัติ</div>';
-
+  const body = document.getElementById('admin-overview-body');
   body.innerHTML = `
-    <div class="admin-card">
-      <div class="admin-card-title">📊 ภาพรวมเกม</div>
-      <div class="admin-stat-grid">
-        <div class="admin-stat"><div class="admin-stat-val">${players.length}</div><div class="admin-stat-label">ผู้เล่นทั้งหมด</div></div>
-        <div class="admin-stat"><div class="admin-stat-val">${inGame}</div><div class="admin-stat-label">ออนไลน์</div></div>
-        <div class="admin-stat"><div class="admin-stat-val">${DB.roundCount||0}</div><div class="admin-stat-label">ตาที่เล่นไป</div></div>
-        <div class="admin-stat"><div class="admin-stat-val">฿${totalChips.toLocaleString()}</div><div class="admin-stat-label">เงินหมุนเวียน</div></div>
-      </div>
+    <div class="admin-section-title">📊 ภาพรวมเกม</div>
+    <div class="admin-grid-2" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-card"><div class="stat-card-val">${players.length}</div><div class="stat-card-label">ผู้ใช้ทั้งหมด</div></div>
+      <div class="stat-card"><div class="stat-card-val" style="color:var(--win)">${inGame}</div><div class="stat-card-label">ออนไลน์</div></div>
+      <div class="stat-card"><div class="stat-card-val">${DB.roundCount||0}</div><div class="stat-card-label">ตาที่เล่นไป</div></div>
+      <div class="stat-card"><div class="stat-card-val" style="font-size:18px">฿${totalChips.toLocaleString()}</div><div class="stat-card-label">เงินหมุนเวียน</div></div>
     </div>
-    <div class="admin-card">
-      <div class="admin-card-title">📜 ประวัติผลการเล่น (${DB.gameLog.length} ตา)</div>
-      <div class="history-log">${logHtml}</div>
+    <div class="admin-section-title" style="margin-top:8px">🟢 ผู้เล่นออนไลน์ตอนนี้</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+      ${players.filter(([n,p])=>p.inGame).map(([n,p])=>{
+        const bg=INITIALS_BG[Object.keys(DB.players).indexOf(n)%INITIALS_BG.length];
+        return `<div style="display:flex;align-items:center;gap:8px;background:var(--bg3);padding:8px 14px;border-radius:10px;border:1px solid rgba(63,185,80,0.2)">
+          <div style="width:30px;height:30px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">${n.substring(0,2).toUpperCase()}</div>
+          <div><div style="font-size:13px">${n}</div><div style="font-size:11px;color:var(--gold)">฿${p.chips.toLocaleString()}</div></div>
+          <div class="status-pill status-online">● ออนไลน์</div>
+        </div>`;
+      }).join('') || '<div style="color:var(--muted);font-size:13px">ไม่มีผู้เล่นออนไลน์</div>'}
     </div>
-    <div class="admin-card admin-fullspan">
-      <div class="admin-card-title">👤 จัดการผู้เล่น</div>
-      <div class="admin-notice">⚠️ การเพิ่ม/หักเงินจะมีผลทันที รวมถึงผู้เล่นที่กำลังเล่นอยู่</div>
-      ${playerRows || '<div style="color:var(--muted)">ยังไม่มีผู้เล่น</div>'}
+    <div class="admin-section-title">📜 ประวัติล่าสุด</div>
+    <div class="history-log">
+      ${DB.gameLog.slice(0,10).map(log=>{
+        const items = log.items.map(i=>`<span class="${i.type==='win'?'log-win':'log-lose'}">${i.name}: ${i.type==='win'?'+':'–'}฿${i.amt}</span>`).join(', ');
+        return `<div class="log-item">ตาที่ ${log.round} (${log.ts}) – ${items}</div>`;
+      }).join('') || '<div style="color:var(--muted);font-size:12px">ยังไม่มีประวัติ</div>'}
     </div>
   `;
 }
 
+function renderUserTable() {
+  const search = (document.getElementById('user-search')?.value||'').toLowerCase();
+  const players = Object.entries(DB.players).filter(([n])=>n!=='admin' && n.toLowerCase().includes(search));
+  const tbody = document.getElementById('user-table-body');
+  if(!tbody) return;
+  tbody.innerHTML = players.map(([name,p],i)=>{
+    const bg=INITIALS_BG[i%INITIALS_BG.length];
+    const col=COLORS[i%COLORS.length];
+    const online = p.inGame;
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:32px;height:32px;border-radius:50%;background:${bg};color:${col};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${name.substring(0,2).toUpperCase()}</div>
+          <div style="font-size:13px;font-weight:500">${name}</div>
+        </div>
+      </td>
+      <td><span class="status-pill ${online?'status-online':'status-offline'}">${online?'● ออนไลน์':'ออฟไลน์'}</span></td>
+      <td style="color:var(--gold);font-weight:600">฿${p.chips.toLocaleString()}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <input class="admin-input" type="number" id="chips-input-${name}" placeholder="จำนวน" min="1" style="width:70px"/>
+          <button class="btn-add-chips" onclick="adminAddChips('${name}')">+เพิ่ม</button>
+          <button class="btn-remove-chips" onclick="adminRemoveChips('${name}')">-หัก</button>
+        </div>
+      </td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-reset-chips" onclick="adminResetChips('${name}')">↺ รีเซ็ต</button>
+          ${online?`<button class="btn-kick" onclick="adminKick('${name}')">Kick</button>`:''}
+          <button class="btn-delete-user" onclick="confirmDeleteUser('${name}')">🗑 ลบ</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">ไม่พบผู้ใช้</td></tr>`;
+}
+
+function renderAdminGame() {
+  const body = document.getElementById('admin-game-body');
+  const players = Object.entries(DB.players).filter(([n])=>n!=='admin');
+  body.innerHTML = `
+    <div class="admin-section-title">🎮 ควบคุมเกม</div>
+    <div class="game-ctrl-grid">
+      <div class="game-ctrl-card">
+        <div class="game-ctrl-label">เฟสเกมปัจจุบัน</div>
+        <div class="game-ctrl-val">${phaseLabel(G.phase)}</div>
+      </div>
+      <div class="game-ctrl-card">
+        <div class="game-ctrl-label">จำนวนผู้เล่นในเกม</div>
+        <div class="game-ctrl-val">${G.seats.length} คน</div>
+      </div>
+      <div class="game-ctrl-card">
+        <div class="game-ctrl-label">ตาที่เล่น</div>
+        <div class="game-ctrl-val">ตาที่ ${DB.roundCount||0}</div>
+      </div>
+      <div class="game-ctrl-card">
+        <div class="game-ctrl-label">ไพ่ใน Deck</div>
+        <div class="game-ctrl-val">${G.deck.length} ใบ</div>
+      </div>
+    </div>
+    <div class="admin-section-title">🛠 การจัดการ</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+      <button class="btn-danger" onclick="adminForceEndRound()">⛔ บังคับจบตา</button>
+      <button class="btn-danger" onclick="adminResetGame()">🔄 รีเซ็ตเกม</button>
+      <button class="btn-primary" onclick="adminKickAll()">🚪 Kick ทุกคนออก</button>
+      <button class="btn-primary" onclick="adminResetAllChips()">💰 รีเซ็ตเงินทุกคน</button>
+    </div>
+    <div class="admin-section-title">👤 Kick ผู้เล่นรายคน</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      ${G.seats.map(s=>`<button class="btn-kick" style="padding:6px 14px;font-size:12px" onclick="adminKick('${s.name}')">Kick ${s.name}</button>`).join('') || '<div style="color:var(--muted);font-size:13px">ไม่มีผู้เล่นในเกม</div>'}
+    </div>
+    <div class="admin-section-title" style="margin-top:20px">💬 ส่งประกาศ</div>
+    <div style="display:flex;gap:8px">
+      <input id="admin-announce-input" class="admin-input" type="text" placeholder="ข้อความประกาศ..." style="width:280px;font-size:13px;padding:8px 12px"/>
+      <button class="btn-primary" onclick="adminSendAnnounce()">📢 ส่ง</button>
+    </div>
+  `;
+}
+
+function phaseLabel(p) {
+  return {idle:'รอเริ่ม',betting:'วางเดิมพัน',dealing:'แจกไพ่',draw:'จับไพ่',['dealer-draw']:'เจ้ามือจับ',result:'จบตา'}[p]||p;
+}
+
+function renderAdminLog() {
+  const body = document.getElementById('admin-log-body');
+  body.innerHTML = DB.gameLog.slice(0,50).map(log=>{
+    const items = log.items.map(i=>`<span class="${i.type==='win'?'log-win':'log-lose'}">${i.name}: ${i.type==='win'?'+':'–'}฿${i.amt}</span>`).join(', ');
+    return `<div class="log-item">ตาที่ ${log.round} (${log.ts}) – ${items}</div>`;
+  }).join('') || '<div style="color:var(--muted);font-size:12px">ยังไม่มีประวัติ</div>';
+}
+
+function renderAdminChatLog() {
+  const body = document.getElementById('admin-chat-log');
+  const msgs = loadChat();
+  body.innerHTML = msgs.map(m=>`
+    <div style="background:var(--bg3);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div>
+        <span style="color:var(--gold);font-weight:600;font-size:12px">${m.sender}</span>
+        <span style="color:var(--muted);font-size:11px;margin-left:8px">${m.time}</span>
+        <div style="font-size:13px;margin-top:2px">${m.text}</div>
+      </div>
+      <button class="btn-delete-user" style="flex-shrink:0;white-space:nowrap" onclick="adminDeleteMsg(${m.id})">🗑</button>
+    </div>
+  `).join('') || '<div style="color:var(--muted);font-size:13px">ไม่มีข้อความ</div>';
+}
+
+// Admin game controls
+function adminForceEndRound() {
+  if(G.phase==='result'||G.phase==='idle'||G.phase==='betting') { showToast('ไม่มีตาที่กำลังเล่น'); return; }
+  resolveRound();
+  showToast('บังคับจบตาแล้ว');
+  renderAdminGame();
+}
+
+function adminResetGame() {
+  G.phase='idle';
+  G.deck=[];
+  G.dealer.hand=[];
+  G.seats.forEach(s=>{ s.hand=[]; s.bet=0; s.result=null; s.stopped=false; s.paidMsg=''; });
+  showToast('รีเซ็ตเกมแล้ว');
+  renderAdminGame();
+}
+
+function adminKickAll() {
+  Object.keys(DB.players).forEach(n=>{ if(n!=='admin') DB.players[n].inGame=false; });
+  G.seats=[];
+  G.phase='idle';
+  saveDB();
+  showToast('Kick ทุกคนออกแล้ว');
+  renderAdminGame();
+}
+
+function adminResetAllChips() {
+  showConfirm('รีเซ็ตเงินทุกคน?','เงินของผู้เล่นทุกคนจะถูกรีเซ็ตเป็น ฿10,000', ()=>{
+    Object.keys(DB.players).forEach(n=>{ if(n!=='admin') DB.players[n].chips=10000; });
+    G.seats.forEach(s=>{ s.chips=10000; });
+    saveDB();
+    showToast('รีเซ็ตเงินทุกคนแล้ว');
+    renderAdminGame();
+  });
+}
+
+function adminResetChips(name) {
+  DB.players[name].chips = 10000;
+  const seat = G.seats.find(s=>s.name===name);
+  if(seat) seat.chips=10000;
+  saveDB();
+  showToast(`รีเซ็ตเงิน ${name} เป็น ฿10,000`);
+  renderUserTable();
+}
+
+function adminSendAnnounce() {
+  const txt = document.getElementById('admin-announce-input')?.value?.trim();
+  if(!txt) return;
+  pushChat({ sender:'📢 แอดมิน', text: txt, time: now(), id: Date.now(), isSystem: true });
+  document.getElementById('admin-announce-input').value='';
+  showToast('ส่งประกาศแล้ว');
+}
+
+function adminDeleteMsg(id) {
+  const msgs = loadChat().filter(m=>m.id!==id);
+  localStorage.setItem('pokdeng_chat', JSON.stringify(msgs));
+  renderAdminChatLog();
+  renderChatMessages();
+}
+
+// ============================================================
+// CONFIRM MODAL
+// ============================================================
+function showConfirm(title, desc, onYes) {
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-desc').textContent = desc;
+  document.getElementById('confirm-yes-btn').onclick = ()=>{ closeConfirm(); onYes(); };
+  document.getElementById('confirm-modal').style.display='flex';
+}
+function closeConfirm() { document.getElementById('confirm-modal').style.display='none'; }
+
+function confirmDeleteUser(name) {
+  showConfirm(`ลบผู้ใช้ "${name}"?`, `การดำเนินการนี้ไม่สามารถเรียกคืนได้ เงิน ฿${DB.players[name]?.chips?.toLocaleString()||0} จะหายไป`, ()=>{
+    adminDeleteUser(name);
+  });
+}
+
+function adminDeleteUser(name) {
+  if(DB.players[name]?.inGame) {
+    G.seats = G.seats.filter(s=>s.name!==name);
+  }
+  delete DB.players[name];
+  saveDB();
+  showToast(`ลบผู้ใช้ ${name} แล้ว`);
+  renderUserTable();
+  renderAdminOverview();
+}
+
+// ============================================================
+// ADMIN ORIGINAL FUNCTIONS (updated)
+// ============================================================
 function adminAddChips(name) {
   const inp = document.getElementById(`chips-input-${name}`);
   const amt = parseInt(inp.value)||0;
   if(amt<=0){ showToast('กรอกจำนวนเงินที่ถูกต้อง'); return; }
   DB.players[name].chips += amt;
-  // Update seat if in game
   const seat = G.seats.find(s=>s.name===name);
   if(seat) seat.chips = DB.players[name].chips;
   saveDB();
   inp.value='';
   showToast(`เพิ่ม ฿${amt.toLocaleString()} ให้ ${name} แล้ว`);
-  renderAdminPanel();
+  renderUserTable();
 }
 
 function adminRemoveChips(name) {
@@ -1195,7 +1612,7 @@ function adminRemoveChips(name) {
   saveDB();
   inp.value='';
   showToast(`หัก ฿${amt.toLocaleString()} จาก ${name} แล้ว`);
-  renderAdminPanel();
+  renderUserTable();
 }
 
 function adminKick(name) {
@@ -1203,9 +1620,123 @@ function adminKick(name) {
   saveDB();
   G.seats = G.seats.filter(s=>s.name!==name);
   showToast(`Kick ${name} ออกจากเกมแล้ว`);
-  renderAdminPanel();
+  renderUserTable();
+  renderAdminGame();
 }
 
+// ============================================================
+// CHAT SYSTEM
+// ============================================================
+const CHAT_KEY = 'pokdeng_chat';
+const CHAT_SYNC_MS = 1000;
+let chatOpen = false;
+let chatUnread = 0;
+let lastChatCount = 0;
+
+function loadChat() {
+  try { return JSON.parse(localStorage.getItem(CHAT_KEY)||'[]'); } catch(e){ return []; }
+}
+
+function pushChat(msg) {
+  const msgs = loadChat();
+  msgs.push(msg);
+  if(msgs.length > 200) msgs.splice(0, msgs.length-200);
+  localStorage.setItem(CHAT_KEY, JSON.stringify(msgs));
+  renderChatMessages();
+}
+
+function now() {
+  return new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+}
+
+function sendChat() {
+  if(!G.myName) return;
+  const inp = document.getElementById('chat-input');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  pushChat({ sender: G.myName, text: txt, time: now(), id: Date.now(), isSystem: false });
+  inp.value = '';
+}
+
+function renderChatMessages() {
+  const box = document.getElementById('chat-messages');
+  if(!box) return;
+  const msgs = loadChat();
+  box.innerHTML = msgs.map(m=>{
+    const isMe = m.sender === G.myName;
+    const isSystem = m.isSystem;
+    if(isSystem) return `<div class="chat-msg system"><div class="chat-bubble">${m.sender}: ${m.text}</div><div class="chat-time">${m.time}</div></div>`;
+    return `<div class="chat-msg ${isMe?'me':'other'}">
+      ${!isMe?`<div class="chat-sender">${m.sender}</div>`:''}
+      <div class="chat-bubble">${escapeHtml(m.text)}</div>
+      <div class="chat-time">${m.time}</div>
+    </div>`;
+  }).join('');
+  box.scrollTop = box.scrollHeight;
+}
+
+function escapeHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+  if(chatOpen) {
+    chatUnread = 0;
+    updateChatBadge();
+    renderChatMessages();
+    setTimeout(()=>{ const b=document.getElementById('chat-messages'); if(b) b.scrollTop=b.scrollHeight; }, 50);
+  }
+}
+
+function updateChatBadge() {
+  const badge = document.getElementById('chat-unread-badge');
+  if(!badge) return;
+  badge.style.display = chatUnread > 0 ? 'flex' : 'none';
+  badge.textContent = chatUnread > 9 ? '9+' : chatUnread;
+}
+
+// Sync chat ทุก 1 วิ
+setInterval(()=>{
+  const msgs = loadChat();
+  if(msgs.length > lastChatCount) {
+    const newCount = msgs.length - lastChatCount;
+    lastChatCount = msgs.length;
+    if(!chatOpen && G.myName) {
+      chatUnread += newCount;
+      updateChatBadge();
+    }
+    if(chatOpen) renderChatMessages();
+    if(currentAdminTab==='chat') renderAdminChatLog();
+  } else {
+    lastChatCount = msgs.length;
+  }
+}, CHAT_SYNC_MS);
+
+function showChatWidget() {
+  const w = document.getElementById('chat-widget');
+  if(w) w.style.display='flex';
+  lastChatCount = loadChat().length;
+}
+function hideChatWidget() {
+  const w = document.getElementById('chat-widget');
+  if(w) w.style.display='none';
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+function goAdmin() {
+  const u=document.getElementById('login-username').value.trim();
+  const p=document.getElementById('login-password').value;
+  if(u!=='admin'||p!=='12345678'){
+    document.getElementById('login-err').textContent='ข้อมูลแอดมินไม่ถูกต้อง';
+    return;
+  }
+  renderAdminPanel();
+  showScreen('admin-screen');
+}
 // ============================================================
 // UTILS
 // ============================================================
